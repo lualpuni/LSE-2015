@@ -78,6 +78,7 @@ sudo cp ./fbcp /usr/local/bin
 # Insert v4l2 driver
 sudo modprobe bcm2835-v4l2
 
-# Reboot required
+# User message
+echo "Reboot required..." >&2
 
 exit 0
