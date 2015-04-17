@@ -29,14 +29,14 @@ sudo sh -c "TERM=linux setterm -foreground black -clear >/dev/tty0"
 # Parse command line options.
 case "$1" in
     vlc)
-        raspivid -t 0 -w 640 -h 480 -fps 20 -o - | cvlc --noaudio\
+        raspivid -t 0 -w 1280 -h 720 -fps 25 -o - | cvlc --noaudio\
         --no-sout-audio -v stream:///dev/stdin --sout\
         '#standard{access=http,mux=ts,dst=:1234}' :demux=h264 2&> /dev/null
         exit 0
         ;;
 
     nc)
-        raspivid -t 0 -w 640 -h 480 -fps 20 -o -| nc -k -l 1234
+        raspivid -t 0 -w 1280 -h 720 -fps 25 -o -| nc -k -l 1234
         exit 0
         ;;
 
