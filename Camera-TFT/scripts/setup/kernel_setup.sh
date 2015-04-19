@@ -24,7 +24,7 @@ mv "$3.bak" "$3"
 }
 
 # Get location of script
-shdir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+#shdir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 # Backup kernel
 sudo cp kernel.img kernel.img.bak.raspbian
