@@ -15,15 +15,20 @@ cd /tmp/rpi-fbcp/
 mkdir build
 cd build
 cmake ..
+
+# Build, check if finished successfully and install
 make
+if [[ $? -ne 0 ]]; then
+    exit 1
+fi
 sudo cp ./fbcp /usr/local/bin
 
 # Clean-up
-cd $shdir
+cd ~/
 rm -rf /tmp/rpi-fbcp
 
 # Set up System V init script to provide service
-sudo cp ../service/fbcp_service.sh /etc/init.d/fbcp
+sudo cp $shdir/../service/fbcp_service.sh /etc/init.d/fbcp
 sudo chmod 755 /etc/init.d/fbcp
 
 exit 0

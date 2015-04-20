@@ -23,9 +23,6 @@ EOF
 mv "$3.bak" "$3"
 }
 
-# Get location of script
-#shdir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-
 # Backup kernel
 sudo cp kernel.img kernel.img.bak.raspbian
 
@@ -68,6 +65,6 @@ mkdir ~/.backup
 sudo mv /usr/share/X11/xorg.conf.d/99-fbturbo.conf ~/.backup
 
 # User message
-echo "Reboot required..." >&2
+echo "Reboot required..."
 
 exit 0
