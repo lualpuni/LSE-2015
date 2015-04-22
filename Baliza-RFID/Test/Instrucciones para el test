@@ -1,0 +1,21 @@
+Dar permisos al usuario para que pueda utilizar el USB: "sudo adduser <username> dialout"
+
+Conectar USB al PC y ver en que puerto se ha conectado: "dmesg"
+Saldrá algo como:
+[  366.239205] usb 2-1.1: Product: FT232R USB UART
+[  366.239210] usb 2-1.1: Manufacturer: FTDI
+[  366.239215] usb 2-1.1: SerialNumber: A602QO52
+[  366.310500] usbcore: registered new interface driver usbserial
+[  366.310517] usbcore: registered new interface driver usbserial_generic
+[  366.310528] usbserial: USB Serial support registered for generic
+[  366.316887] usbcore: registered new interface driver ftdi_sio
+[  366.316905] usbserial: USB Serial support registered for FTDI USB Serial Device
+[  366.317011] ftdi_sio 2-1.1:1.0: FTDI USB Serial Device converter detected
+[  366.317047] usb 2-1.1: Detected FT232RL
+[  366.317049] usb 2-1.1: Number of endpoints 2
+[  366.317052] usb 2-1.1: Endpoint 1 MaxPacketSize 64
+[  366.317054] usb 2-1.1: Endpoint 2 MaxPacketSize 64
+[  366.317057] usb 2-1.1: Setting MaxPacketSize 64
+[  366.318961] usb 2-1.1: FTDI USB Serial Device converter now attached to ttyUSB0
+
+En este ejemplo el USB se encuentra en "ttyUSB0"
