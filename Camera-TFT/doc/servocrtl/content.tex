@@ -1,0 +1,106 @@
+\section{Description}
+The \textbf{servoctrl} application provides the functionality of controlling up
+to two servo motors from a Raspberry Pi embedded system.
+
+\section{Application}
+The application receives input on network socket \textbf{2301}. The input
+commands have a fixed size of one byte in the following format:
+
+   \subsubsection{\texttt{Input}}
+%   \begin{itemize}
+%      \item 8 bit.
+%      \item \textbf{Write}.
+%   \end{itemize}
+   \begin{table}[!htb]
+      \begin{center}
+         \begin{tabular}{|c|c|c|}
+            \rowcolor{black}
+            \textcolor{white}{\textbf{Bit}}  &
+            \textcolor{white}{\textbf{Name}} &
+            \textcolor{white}{\textbf{Description}}\\
+            \hline
+            \hline
+            \textbf{6-0} & \texttt{pos} & Offset source \\
+            \hline
+            \textbf{7}   & \texttt{sel} & Servo selector \\
+            \hline
+         \end{tabular}
+         \caption{\texttt{Input}}
+         \label{table:input}
+      \end{center}
+   \end{table}
+
+The \textit{sel} field determines which servo motor is being addressed and the
+\textit{pos} field contains the position to be set; where bX0000000 is the
+minimum angular position of the servo and bX1111111 is the maximum angular
+position of the servo.\\
+
+This application makes use of the following GPIOs:
+
+   \subsubsection{\texttt{Output}}
+%   \begin{itemize}
+%      \item 2 GPIOs.
+%      \item \textbf{output}.
+%   \end{itemize}
+   \begin{table}[!htb]
+      \begin{center}
+         \begin{tabular}{|c|c|c|}
+            \rowcolor{black}
+            \textcolor{white}{\textbf{GPIO}}  &
+            \textcolor{white}{\textbf{Name}} &
+            \textcolor{white}{\textbf{Description}}\\
+            \hline
+            \hline
+            \textbf{05} (pin 29) & \texttt{servo0} & Servo 0 control signal \\
+            \hline
+            \textbf{13} (pin 33) & \texttt{servo1} & Servo 1 control signal \\
+            \hline
+         \end{tabular}
+         \caption{\texttt{Output}}
+         \label{table:output}
+      \end{center}
+   \end{table}
+
+
+\section{Setup}
+A set up script is provided at \texttt{../../scripts/setup/servoctrl\_setup.sh}
+to ease the building and installation.
+
+If the setup script finished successfully; the binary should be at\\
+\texttt{/usr/local/bin/servoctrl} and a UNIX System V init script should be at\\
+\texttt{/etc/init.d/servoctrl}.
+
+Aside form the setup script; the source code and makefiles are also provided.
+
+\section{Service}
+To start \textbf{servoctrl} as a daemon; execute \texttt{/etc/init.d/servoctrl}
+as root. This daemon can take as argument \texttt{start}, \texttt{stop},
+\texttt{restart} or \texttt{force-reload}.
+
+\section{Testing}
+A test script is provided at \texttt{../../scripts/test/servoctrl\_test.sh} to
+test the application. The test script execute a series of test cases and then
+asks for user input to determine if the test executed correctly.
+
+If the test was successful, the scripts returns 0, if the test failed a value
+different from 0 is returned.
+
+The test sequence currently implemented is the following:
+
+   \begin{enumerate}
+      \item servo0 and servo1 are both set to their minimum position.
+      \item servo1 progresses from its minimum position to its maximum position.
+      \item servo0 progresses from its minimum position to its maximum position.
+      \item servo1 progresses from its maximum position to its minimum position.
+      \item servo0 progresses from its maximum position to its minimum position.
+      \item servo0 and servo1 both progresses together from their minimum
+         position to their maximum position.
+      \item servo0 progresses from its maximum position to its minimum position.
+      \item servo0 progrsses from its minimum position to its maximum position
+         while servo1 progresses from its maximum position to its minimum
+         position.
+   \end{enumerate}
+
+As an example, in the specific case where the servos control the pan/tilt of an
+instrument the test should make the instrument follow a square route and then
+inscribe a cross within that square route.

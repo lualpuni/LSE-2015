@@ -1,0 +1,43 @@
+\section{Description}
+The \textbf{fbcp} application replicated the HDMI output of the Raspberry Pi on
+the TFT LCD touchscreen.
+
+\section{Application}
+The application is developed and maintained by Git user tasanakorn. The source
+code of the application can be found at:\\
+
+\texttt{https://github.com/tasanakorn/rpi-fbcp.git}\\
+
+The \textbf{fbcp} application copies the content of \texttt{/dev/fb0} (HDMI) to
+\texttt{/dev/fb1} (TFT LCD touchscreen). The application is started without
+arguments or parameters.
+
+\section{Setup}
+A set up script is provided at \texttt{../../scripts/setup/fbcp\_setup.sh} to
+ease the building and installation.
+
+If the setup script finished successfully; the binary should be at\\
+\texttt{/usr/local/bin/fbcp} and a UNIX System V init script should be at\\
+\texttt{/etc/init.d/fbcp}.
+
+\section{Service}
+To start \textbf{fbcp} as a daemon; execute \texttt{/etc/init.d/fbcp}
+as root. This daemon can take as argument \texttt{start}, \texttt{stop},
+\texttt{restart} or \texttt{force-reload}.
+
+\section{Testing}
+A test script is provided at
+\texttt{../../scripts/test/camera-fbcp-tft\_test.sh} to test the application.
+The test script execute a series of test cases and then asks for user input to
+determine if the test executed correctly.
+
+If the test was successful, the scripts returns 0, if the test failed a value
+different from 0 is returned.
+
+The test sequence currently implemented starts and stops the service while an
+instance of \texttt{raspivid} is running.
+
+Please note that for \texttt{raspivid} to run the camera must be present and
+some system configuration must have taken place at some time prior to the test.
+Please refer to the kernel configuration documentation
+(\texttt{../kernel/report.pdf}) for more information on this point.
