@@ -65,6 +65,6 @@ mkdir ~/.backup
 sudo mv /usr/share/X11/xorg.conf.d/99-fbturbo.conf ~/.backup
 
 # User message
-echo "Reboot required..."
+echo "Reboot required..." >&2
 
 exit 0
