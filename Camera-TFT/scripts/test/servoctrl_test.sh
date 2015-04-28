@@ -1,6 +1,6 @@
 #!/bin/bash
 
-step=0.02
+step=0.01
 
 # Set both servos to minimum position
 printf \\$(printf '%03o\t' 0)

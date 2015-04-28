@@ -44,16 +44,20 @@ This application makes use of the following GPIOs:
 %   \end{itemize}
    \begin{table}[!htb]
       \begin{center}
-         \begin{tabular}{|c|c|c|}
+         \begin{tabular}{|c|c|c|c|c|}
             \rowcolor{black}
-            \textcolor{white}{\textbf{GPIO}}  &
-            \textcolor{white}{\textbf{Name}} &
+            \textcolor{white}{\textbf{BCM GPIO}}  &
+				\textcolor{white}{\textbf{Name}}  &
+            \textcolor{white}{\textbf{Pin}} &
+            \textcolor{white}{\textbf{Function}} &
             \textcolor{white}{\textbf{Description}}\\
             \hline
             \hline
-            \textbf{05} (pin 29) & \texttt{servo0} & Servo 0 control signal \\
+            \textbf{05} & \textbf{GPIO.21} & \textbf{29} &
+					\texttt{servo0} & Servo 0 control signal \\
             \hline
-            \textbf{13} (pin 33) & \texttt{servo1} & Servo 1 control signal \\
+            \textbf{13} & \textbf{GPIO.23} & \textbf{33} &
+					\texttt{servo1} & Servo 1 control signal \\
             \hline
          \end{tabular}
          \caption{\texttt{Output}}
