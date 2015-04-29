@@ -47,16 +47,15 @@ This application makes use of the following GPIOs:
          \begin{tabular}{|c|c|c|c|c|}
             \rowcolor{black}
             \textcolor{white}{\textbf{BCM GPIO}}  &
-				\textcolor{white}{\textbf{Name}}  &
-            \textcolor{white}{\textbf{Pin}} &
+            \textcolor{white}{\textbf{Header Pin}} &
             \textcolor{white}{\textbf{Function}} &
             \textcolor{white}{\textbf{Description}}\\
             \hline
             \hline
-            \textbf{05} & \textbf{GPIO.21} & \textbf{29} &
+            \textbf{18} & \textbf{12} &
 					\texttt{servo0} & Servo 0 control signal \\
             \hline
-            \textbf{13} & \textbf{GPIO.23} & \textbf{33} &
+            \textbf{13} & \textbf{33} &
 					\texttt{servo1} & Servo 1 control signal \\
             \hline
          \end{tabular}
@@ -65,6 +64,12 @@ This application makes use of the following GPIOs:
       \end{center}
    \end{table}
 
+\section{Compatibility}
+This code is compatible with Raspberry Pi model A+ and B+ onward. At the time of
+writing, this includes models A+, B+ and 2B.
+
+The reason that this code is not compatible with previous models is because
+models A and B only had 1 hardware PWM pin accessible on the P1 pin header.
 
 \section{Setup}
 A set up script is provided at \texttt{../../scripts/setup/servoctrl\_setup.sh}

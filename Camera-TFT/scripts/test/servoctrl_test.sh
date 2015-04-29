@@ -1,6 +1,7 @@
 #!/bin/bash
 
-step=0.01
+timeStep=0.001
+posStep=2
 
 # Set both servos to minimum position
 printf \\$(printf '%03o\t' 0)
@@ -8,47 +9,47 @@ printf \\$(printf '%03o\t' 128)
 sleep 1
 
 # segment " _ "
-for ((i=0; i<=127; i++)) do
+for ((i=0; i<=127; i = i + $posStep)) do
    printf \\$(printf '%03o\t' "$i") | nc 127.0.0.1 2301
-   sleep $step
+   sleep $timeStep
 done
 
 # segment "  |"
-for ((i=128; i<=255; i++)) do
+for ((i=128; i<=255; i = i + $posStep)) do
    printf \\$(printf '%03o\t' "$i") | nc 127.0.0.1 2301
-   sleep $step
+   sleep $timeStep
 done
 
 # segment " ‾ "
-for ((i=127; i>=0; i--)) do
+for ((i=127; i>=0; i = i - $posStep)) do
    printf \\$(printf '%03o\t' "$i") | nc 127.0.0.1 2301
-   sleep $step
+   sleep $timeStep
 done
 
 # segment "|  "
-for ((i=255; i>=0; i--)) do
+for ((i=255; i>=128; i = i - $posStep)) do
    printf \\$(printf '%03o\t' "$i") | nc 127.0.0.1 2301
-   sleep $step
+   sleep $timeStep
 done
 
 # segment " / "
-for ((i=0; i<=127; i++)) do
+for ((i=0; i<=127; i = i + $posStep)) do
    printf \\$(printf '%03o\t' "$i")        | nc 127.0.0.1 2301
    printf \\$(printf '%03o\t' $((128+$i))) | nc 127.0.0.1 2301
-   sleep $step
+   sleep $timeStep
 done
 
 # segment " ‾ "
-for ((i=127; i>=0; i--)) do
+for ((i=127; i>=0; i = i - $posStep)) do
    printf \\$(printf '%03o\t' "$i") | nc 127.0.0.1 2301
-   sleep $step
+   sleep $timeStep
 done
 
 # segment " \ "
-for ((i=0; i<=127; i++)) do
+for ((i=0; i<=127; i = i + $posStep)) do
    printf \\$(printf '%03o\t' "$i")        | nc 127.0.0.1 2301
    printf \\$(printf '%03o\t' $((255-$i))) | nc 127.0.0.1 2301
-   sleep $step
+   sleep $timeStep
 done
 
 echo "Have the servo motors completed the sequence successfully [Y/n]?"

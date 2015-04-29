@@ -24,7 +24,14 @@ fi
 cd ~/
 rm -rf /tmp/rpi-wiringpi
 
-#   [...not finished...]
+# Buld and install servoctrl
+cd $shdir/../../servoctrl
+make
+if [[ $? -ne 0 ]]; then
+    exit 1
+fi
+sudo cp ./fbcp /usr/local/bin
+make clean
 
 # Set up System V init script to provide service
 sudo cp $shdir/../service/servoctrl_service.sh /etc/init.d/servoctrl

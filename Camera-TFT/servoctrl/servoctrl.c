@@ -10,15 +10,13 @@
 #include <wiringPi.h>
 
 #define portNo 2301
-#define servo0 18
-#define servo1 13
 
 static volatile int listen_fd, comm_fd;
 
 void INThandler(int sig)
 {
 	pwmWrite(18, 0);
-	pwmWrite(18, 0);
+	pwmWrite(13, 0);
 	close(comm_fd);
 	close(listen_fd);
 	exit(0);
@@ -32,22 +30,6 @@ int main(int argc, char *argv[])
 	struct sockaddr_in servaddr;
 
 	signal(SIGINT, INThandler);
-
-	if (wiringPiSetupGpio() == -1)
-	{
-		fprintf(stderr, "Error: failed to set up WiringPi\n");
-		return 1;
-	}
-
-	pwmSetMode(PWM_MODE_MS)
-	pwmSetClock(192)
-	pwmSetRange(2000)
-
-	pinMode (18, PWM_OUTPUT)
-	pinMode (13, PWM_OUTPUT)
-
-	pwmWrite(18, 150)
-	pwmWrite(13, 150)
 
 	listen_fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (listen_fd == -1)
@@ -67,11 +49,26 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	if (listen(listen_fd, 1) == -1)
+	if (listen(listen_fd, 5) == -1)
 	{
 		fprintf(stderr, "%s\n", strerror(errno));
 		return 1;
 	}
+
+	if (wiringPiSetupGpio() == -1)
+	{
+		fprintf(stderr, "Error: failed to set up WiringPi\n");
+		return 1;
+	}
+
+	pinMode (18, PWM_OUTPUT);
+	pinMode (13, PWM_OUTPUT);
+	pwmSetMode(PWM_MODE_MS);
+	pwmSetMode(PWM_MODE_MS);
+	pwmSetClock(192);
+	pwmSetRange(2000);
+	pwmWrite(18, 150);
+	pwmWrite(13, 150);
 
 	while(1)
 	{
@@ -88,10 +85,10 @@ int main(int argc, char *argv[])
 			return 1;
 		}
 
-		if (cmd & (1 << 8))
-			pwmWrite(13, (100 + (((cmd & 0x7F)*100)/127)));
+		if (cmd & 0x80)
+			pwmWrite(13, (100 + (((cmd & 0x7F) * 100) / 127)));
 		else
-			pwmWrite(18, (100 + (((cmd & 0x7F)*100)/127)));
+			pwmWrite(18, (100 + (((cmd & 0x7F) * 100) / 127)));
 
 		close(comm_fd);
 	}
