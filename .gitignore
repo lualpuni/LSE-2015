@@ -149,7 +149,7 @@ target/
 moc_*.cpp
 qrc_*.cpp
 ui_*.h
-Makefile*
+#Makefile*
 *-build-*
 
 # QtCreator
