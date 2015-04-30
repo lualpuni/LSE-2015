@@ -30,7 +30,7 @@ make
 if [[ $? -ne 0 ]]; then
     exit 1
 fi
-sudo cp ./fbcp /usr/local/bin
+sudo cp ./servoctrl /usr/local/bin
 make clean
 
 # Set up System V init script to provide service
