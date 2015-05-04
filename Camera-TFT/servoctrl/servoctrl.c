@@ -5,22 +5,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <signal.h>
 #include <errno.h>
 #include <wiringPi.h>
 
 #define portNo 2301
-
-static volatile int listen_fd, comm_fd;
-
-void INThandler(int sig)
-{
-	pwmWrite(18, 0);
-	pwmWrite(13, 0);
-	close(comm_fd);
-	close(listen_fd);
-	exit(0);
-}
 
 int main(int argc, char *argv[])
 {
@@ -28,8 +16,6 @@ int main(int argc, char *argv[])
 	char cmd;
 
 	struct sockaddr_in servaddr;
-
-	signal(SIGINT, INThandler);
 
 	listen_fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (listen_fd == -1)
@@ -92,5 +78,7 @@ int main(int argc, char *argv[])
 
 		close(comm_fd);
 	}
+	close(comm_fd);
+	close(listen_fd);
 	return 0;
 }

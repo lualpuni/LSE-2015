@@ -35,6 +35,7 @@ make clean
 
 # Set up System V init script to provide service
 sudo cp $shdir/../service/servoctrl_service.sh /etc/init.d/servoctrl
+sudo chown root:root /etc/init.d/servoctrl
 sudo chmod 755 /etc/init.d/servoctrl
 
 exit 0

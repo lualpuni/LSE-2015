@@ -1,11 +1,11 @@
 #!/bin/bash
 
 timeStep=0.001
-posStep=2
+posStep=1
 
 # Set both servos to minimum position
-printf \\$(printf '%03o\t' 0)
-printf \\$(printf '%03o\t' 128)
+printf \\$(printf '%03o\t' 0)   | nc 127.0.0.1 2301
+printf \\$(printf '%03o\t' 128) | nc 127.0.0.1 2301
 sleep 1
 
 # segment " _ "
