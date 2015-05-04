@@ -10,13 +10,13 @@
 ### END INIT INFO
 
 #Required
-USER=pi              #Set username here.
+USER=root
 
 case "$1" in
   start)
         echo "Starting fbcp"
         start-stop-daemon --start --chuid $USER --name fbcp --pidfile /var/run/fbcp.pid \
-         --background --make-pidfile --exec /usr/local/bin/fbcp -- --do-not-daemonize 
+         --background --make-pidfile --startas /usr/local/bin/fbcp -- --daemon
         ;;
   stop)
         echo "Stopping fbcp"
@@ -29,7 +29,7 @@ case "$1" in
         sleep 5s
         echo "Restarting fbcp"
         start-stop-daemon --start --chuid $USER --name fbcp --pidfile /var/run/fbcp.pid \
-         --background --make-pidfile --exec /usr/local/bin/fbcp -- --do-not-daemonize 
+         --background --make-pidfile --startas /usr/local/bin/fbcp -- --daemon
         ;;
   *)
         N=/etc/init.d/$NAME

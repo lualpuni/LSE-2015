@@ -10,13 +10,13 @@
 ### END INIT INFO
 
 #Required
-USER=pi              #Set username here.
+USER=root
 
 case "$1" in
   start)
         echo "Starting servoctrl"
         start-stop-daemon --start --chuid $USER --name servoctrl --pidfile /var/run/servoctrl.pid \
-         --background --make-pidfile --exec /usr/local/bin/servoctrl -- --do-not-daemonize 
+         --background --make-pidfile --startas /usr/local/bin/servoctrl -- --daemon
         ;;
   stop)
         echo "Stopping servoctrl"
@@ -29,7 +29,7 @@ case "$1" in
         sleep 5s
         echo "Restarting servoctrl"
         start-stop-daemon --start --chuid $USER --name servoctrl --pidfile /var/run/servoctrl.pid \
-         --background --make-pidfile --exec /usr/local/bin/servoctrl -- --do-not-daemonize 
+         --background --make-pidfile --startas /usr/local/bin/servoctrl -- --daemon
         ;;
   *)
         N=/etc/init.d/$NAME
