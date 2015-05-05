@@ -3,6 +3,9 @@
 timeStep=0.001
 posStep=1
 
+sudo /etc/init.d/servoctrl start
+sleep 1
+
 # Set both servos to minimum position
 printf \\$(printf '%03o\t' 0)   | nc 127.0.0.1 2301
 printf \\$(printf '%03o\t' 128) | nc 127.0.0.1 2301
@@ -51,6 +54,8 @@ for ((i=0; i<=127; i = i + $posStep)) do
    printf \\$(printf '%03o\t' $((255-$i))) | nc 127.0.0.1 2301
    sleep $timeStep
 done
+
+sudo /etc/init.d/servoctrl stop
 
 echo "Have the servo motors completed the sequence successfully [Y/n]?"
 read ans1
