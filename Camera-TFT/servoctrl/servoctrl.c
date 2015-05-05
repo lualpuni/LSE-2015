@@ -18,6 +18,8 @@ static void signalHandler(int signum)
 {
 	close(comm_fd);
 	close(listen_fd);
+	pinMode(18, INPUT);
+	pinMode(13, INPUT);
 	syslog(LOG_INFO, "stopping\n");
 	closelog();
 	exit (0);
@@ -78,8 +80,8 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	pinMode (18, PWM_OUTPUT);
-	pinMode (13, PWM_OUTPUT);
+	pinMode(18, PWM_OUTPUT);
+	pinMode(13, PWM_OUTPUT);
 	pwmSetMode(PWM_MODE_MS);
 	pwmSetClock(192);
 	pwmSetRange(2000);

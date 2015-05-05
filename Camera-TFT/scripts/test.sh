@@ -12,4 +12,5 @@ for filename in ./test/*.sh; do
    fi
 done
 
+echo "All tests have been executed successfully."
 exit 0

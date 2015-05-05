@@ -1,7 +1,7 @@
 #!/bin/bash
 
-timeStep=0.001
-posStep=1
+timeStep=0.0005
+posStep=2
 
 sudo /etc/init.d/servoctrl start
 sleep 1
