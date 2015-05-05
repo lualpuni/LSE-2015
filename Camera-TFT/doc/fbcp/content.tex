@@ -12,6 +12,9 @@ The \textbf{fbcp} application copies the content of \texttt{/dev/fb0} (HDMI) to
 \texttt{/dev/fb1} (TFT LCD touchscreen). The application is started without
 arguments or parameters.
 
+The application does not write to \texttt{STDOUT} or \texttt{STDERR}. It instead
+writes to \textbf{Syslog} (\texttt{/var/log/syslog}).
+
 \section{Setup}
 A set up script is provided at \texttt{../../scripts/setup/fbcp\_setup.sh} to
 ease the building and installation.
