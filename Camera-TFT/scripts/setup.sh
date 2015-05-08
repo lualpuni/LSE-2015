@@ -12,4 +12,5 @@ for filename in ./setup/*.sh; do
    fi
 done
 
+echo "All set-ups have been executed successfully."
 exit 0

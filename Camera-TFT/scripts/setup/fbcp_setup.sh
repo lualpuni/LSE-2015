@@ -29,6 +29,7 @@ rm -rf /tmp/rpi-fbcp
 
 # Set up System V init script to provide service
 sudo cp $shdir/../service/fbcp_service.sh /etc/init.d/fbcp
+sudo chown root:root /etc/init.d/fbcp
 sudo chmod 755 /etc/init.d/fbcp
 
 exit 0

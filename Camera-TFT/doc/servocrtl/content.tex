@@ -3,7 +3,7 @@ The \textbf{servoctrl} application provides the functionality of controlling up
 to two servo motors from a Raspberry Pi embedded system.
 
 \section{Application}
-The application receives input on network socket \textbf{2301}. The input
+The application receives input on network socket \texttt{2301}. The input
 commands have a fixed size of one byte in the following format:
 
    \subsubsection{\texttt{Input}}
@@ -53,16 +53,30 @@ This application makes use of the following GPIOs:
             \hline
             \hline
             \textbf{18} & \textbf{12} &
-					\texttt{servo0} & Servo 0 control signal \\
+               \texttt{servo0} & Servo 0 control signal \\
             \hline
             \textbf{13} & \textbf{33} &
-					\texttt{servo1} & Servo 1 control signal \\
+               \texttt{servo1} & Servo 1 control signal \\
             \hline
          \end{tabular}
          \caption{\texttt{Output}}
          \label{table:output}
       \end{center}
    \end{table}
+
+The application catches \texttt{SIGTERM} and \texttt{SIGINT} signals to
+terminate gracefully after a clean-up. Please note that the provided service
+script (Section \ref{sec:service}) handles this appropriately.
+
+In the case that an error occurs and \textbf{servoctrl} exits ungracefully, it
+is possible that application will (temporarily) not start again because the OS
+may not be aware that socket \texttt{2301} is no longer in use by the previous
+instance of \textbf{servoctrl}. In this situation, it is possible to run
+\texttt{sudo fuser -k 2301/tcp} to kill all processes listening on socket
+\texttt{2301}.
+
+The application does not write to \texttt{STDOUT} or \texttt{STDERR}. It instead
+writes to \textbf{Syslog} (\texttt{/var/log/syslog}).
 
 \section{Compatibility}
 This code is compatible with Raspberry Pi model A+ and B+ onward. At the time of
@@ -81,10 +95,10 @@ If the setup script finished successfully; the binary should be at\\
 
 Aside form the setup script; the source code and makefiles are also provided.
 
-\section{Service}
+\section{Service} \label{sec:service}
 To start \textbf{servoctrl} as a daemon; execute \texttt{/etc/init.d/servoctrl}
-as root. This daemon can take as argument \texttt{start}, \texttt{stop},
-\texttt{restart} or \texttt{force-reload}.
+as root. This daemon can take as argument \textbf{start}, \textbf{stop},
+\textbf{restart} or \textbf{force-reload}.
 
 \section{Testing}
 A test script is provided at \texttt{../../scripts/test/servoctrl\_test.sh} to
