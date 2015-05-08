@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "comNodoCentral.h"
 #include "serial.h"
+#include <stdlib.h> 
 
 #define TIMEOUT 1000
 #define PACKET_RECEIVED 99
@@ -344,16 +345,13 @@ void print_beacon_table(beacons_table_t beacons_table)
    int i;
    int k;
    //printf("************ Beacons table *************\n\r");
+   system("clear");
    for (i = 0; i < beacons_table.reg_elements; i++)
    {
-       printf("****************************************\n\r");
-       printf("******* Beacon: %016d *******\n\r",beacons_table.elements[i].beacon);
-       printf("****************************************\n\r");
+       printf("BEACON: %016d \n\r",beacons_table.elements[i].beacon);
        for(k = 0; k < beacons_table.elements[i].reg_drones; k++)
        {
-          printf("----------------------------------------\n\r");
-          printf("------- Drone: %016d --------\n\r",beacons_table.elements[i].drones_table[k]);
-          printf("----------------------------------------\n\r");
+          printf("     Drone: %016d \n\r",beacons_table.elements[i].drones_table[k]);
        }
        printf("\n\r");
        printf("\n\r");

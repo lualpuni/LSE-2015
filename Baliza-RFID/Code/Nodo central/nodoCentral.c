@@ -76,18 +76,41 @@ int main (int argc, char* argv[])
                     parse_received(serial_fd[k],&beacons_table);
                  }
               }
+
+
+              ////SEND PACKET AGAIN
+               for(k = 0; k < num_ports; k++ ) //Send a packet for each port
+              {
+                 send_packet(serial_fd[k], packet_to_send);
+              }
+
+              /*
+              It's necessary to wait for the response and parse it. 
+              In each "parse" command waits for receive one character during
+              TIMEOUT us (in this case 1ms). Thus, in order to wait 2 sec. aprox
+              for a response, the number of iterations are 2000ms/ (1ms X num_ports)
+              */
+              for(i = 0; i <= (2000 / num_ports); i++) 
+              {
+                 for(k = 0; k < num_ports; k++ )
+                 {
+                    parse_received(serial_fd[k],&beacons_table);
+                 }
+              }
+
+
               print_beacon_table(beacons_table);
               state = PLAY;
             break;
          case PLAY:
               /*
               It's necessary to wait for the response and parse it. The table with
-              the beacons and drones is being printed every 10 sec. In the same way,
+              the beacons and drones is being printed every 1 sec. In the same way,
               in each "parse" command waits for receive one character during
-              TIMEOUT us (in this case 1ms). Thus, in order to wait 10 sec. aprox,
-              the number of iterations are 10000ms/ (1ms X num_ports)
+              TIMEOUT us (in this case 1ms). Thus, in order to wait 1 sec. aprox,
+              the number of iterations are 1000ms/ (1ms X num_ports)
               */
-              for(i = 0; i <= (10000 / num_ports); i++) 
+              for(i = 0; i <= (1000 / num_ports); i++) 
               {
                  for(k = 0; k < num_ports; k++ )
                  {

@@ -46,7 +46,8 @@ int main (int argc, char* argv[])
   test_packet.length = 0x0004;
   if (argv[4][0] == '0')
   {
-     test_packet.packet_type = NEW_GAME_REPLY;
+     //test_packet.packet_type = NEW_GAME_REPLY;
+     test_packet.packet_type = NEW_GAME_REQUEST;
   }
   else
   {

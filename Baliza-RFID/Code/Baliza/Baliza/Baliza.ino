@@ -123,7 +123,7 @@ void drone_ID_to_data(drone_ID_t drone_ID, packet_t *packet);
 beacon_element_t* find_beacon (beacon_ID_t beacon_ID,beacons_table_t *beacons_table);
 
 //Global variables
-const uint16_t beaconID = 0x0002;
+const uint16_t beaconID = 0x0003;
 const uint16_t AllNodesID = 0x0000;
 //beacons_table_t beacons_table_instance;
 //packet_t packet_instance; //No se poque pero si lo defino como variable global no funciona. Tampoco me deja definirlo dentro de la funcion como "static" 
@@ -198,7 +198,7 @@ void loop() {
                      quotient = quotient / 16;
 
                      remainder = quotient % 16;
-                     Serial.write((hex_to_char(remainder));
+                     Serial.write(hex_to_char(remainder));
                  }
            }
             state = PLAY;
