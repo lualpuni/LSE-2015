@@ -35,34 +35,37 @@ sudo apt-get install -y adafruit-pitft-helper
 
 # Back-up boot configuration and create copy
 sudo cp /boot/config.txt /boot/config.txt.raspbian.bak
-cat /boot/config.txt > /tmp/config.txt
+#cat /boot/config.txt > /tmp/config.txt
 
 # Add the device tree overlay manually
-echo "" >> /tmp/config.txt
-echo "[pi1]" >> /tmp/config.txt
-echo "device_tree=bcm2708-rpi-b-plus.dtb" >> /tmp/config.txt
-echo "[pi2]" >> /tmp/config.txt
-echo "device_tree=bcm2709-rpi-2-b.dtb" >> /tmp/config.txt
-echo "[all]" >> /tmp/config.txt
-echo "dtparam=spi=on" >> /tmp/config.txt
-echo "dtparam=i2c1=on" >> /tmp/config.txt
-echo "dtparam=i2c_arm=on" >> /tmp/config.txt
-echo "dtoverlay=pitft28r,rotate=90,speed=32000000,fps=20" >> /tmp/config.txt
+#echo "" >> /tmp/config.txt
+#echo "[pi1]" >> /tmp/config.txt
+#echo "device_tree=bcm2708-rpi-b-plus.dtb" >> /tmp/config.txt
+#echo "[pi2]" >> /tmp/config.txt
+#echo "device_tree=bcm2709-rpi-2-b.dtb" >> /tmp/config.txt
+#echo "[all]" >> /tmp/config.txt
+#echo "dtparam=spi=on" >> /tmp/config.txt
+#echo "dtparam=i2c1=on" >> /tmp/config.txt
+#echo "dtparam=i2c_arm=on" >> /tmp/config.txt
+#echo "dtoverlay=pitft28r,rotate=90,speed=32000000,fps=20" >> /tmp/config.txt
 
 # Enable camera
-set_config_var start_x 1 /tmp/config.txt
-set_config_var gpu_mem 128 /tmp/config.txt
-sed /tmp/config.txt -i -e "s/^startx/#startx/"
-sed /tmp/config.txt -i -e "s/^fixup_file/#fixup_file/"
+#set_config_var start_x 1 /tmp/config.txt
+#set_config_var gpu_mem 128 /tmp/config.txt
+#sed /tmp/config.txt -i -e "s/^startx/#startx/"
+#sed /tmp/config.txt -i -e "s/^fixup_file/#fixup_file/"
 
 # Write-back boot configuration
-sudo chown root:root /tmp/config.txt
-sudo chmod 766 /tmp/config.txt
-sudo mv /tmp/config.txt /boot
+#sudo chown root:root /tmp/config.txt
+#sudo chmod 766 /tmp/config.txt
+#sudo mv /tmp/config.txt /boot
 
 # Deactivate accelerated X framebuffer
-mkdir ~/.backup
+if [[ ! -e ~/.backup ]]; then mkdir ~/.backuph; fi
 sudo mv /usr/share/X11/xorg.conf.d/99-fbturbo.conf ~/.backup
+
+# Simple install script [edit: new]
+sudo adafruit-pitft-helper -t 28r
 
 # User message
 echo "Reboot required..." >&2
