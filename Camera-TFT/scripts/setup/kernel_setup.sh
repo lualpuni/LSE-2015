@@ -24,7 +24,7 @@ mv "$3.bak" "$3"
 }
 
 # Backup kernel
-sudo cp kernel.img kernel.img.bak.raspbian
+sudo cp /boot/kernel.img /boot/kernel.img.bak.raspbian
 
 # Add apt.adafruit.com to list of software sources
 curl -SLs https://apt.adafruit.com/add | sudo bash
@@ -35,7 +35,7 @@ sudo apt-get install -y adafruit-pitft-helper
 
 # Back-up boot configuration and create copy
 sudo cp /boot/config.txt /boot/config.txt.raspbian.bak
-#cat /boot/config.txt > /tmp/config.txt
+cat /boot/config.txt > /tmp/config.txt
 
 # Add the device tree overlay manually
 #echo "" >> /tmp/config.txt
@@ -50,21 +50,21 @@ sudo cp /boot/config.txt /boot/config.txt.raspbian.bak
 #echo "dtoverlay=pitft28r,rotate=90,speed=32000000,fps=20" >> /tmp/config.txt
 
 # Enable camera
-#set_config_var start_x 1 /tmp/config.txt
-#set_config_var gpu_mem 128 /tmp/config.txt
-#sed /tmp/config.txt -i -e "s/^startx/#startx/"
-#sed /tmp/config.txt -i -e "s/^fixup_file/#fixup_file/"
+set_config_var start_x 1 /tmp/config.txt
+set_config_var gpu_mem 128 /tmp/config.txt
+sed /tmp/config.txt -i -e "s/^startx/#startx/"
+sed /tmp/config.txt -i -e "s/^fixup_file/#fixup_file/"
 
 # Write-back boot configuration
-#sudo chown root:root /tmp/config.txt
-#sudo chmod 766 /tmp/config.txt
-#sudo mv /tmp/config.txt /boot
+sudo chown root:root /tmp/config.txt
+sudo chmod 766 /tmp/config.txt
+sudo mv /tmp/config.txt /boot
 
 # Deactivate accelerated X framebuffer
 if [[ ! -e ~/.backup ]]; then mkdir ~/.backuph; fi
 sudo mv /usr/share/X11/xorg.conf.d/99-fbturbo.conf ~/.backup
 
-# Simple install script [edit: new]
+# Simple install script [edit]
 sudo adafruit-pitft-helper -t 28r
 
 # User message

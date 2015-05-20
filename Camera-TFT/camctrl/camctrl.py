@@ -8,12 +8,10 @@ import sys
 
 if __name__ == '__main__':
 
-    delta = 10
+    delta = 5
     pause = False
     xPos  = 64
     yPos  = 64
-
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # connect to serial port
     ser = serial.Serial()
@@ -39,38 +37,41 @@ if __name__ == '__main__':
     while True:
         cmd = ser.read(1)
 
-        d = ((cmd & (1 << 0)) >> 0)
-        u = ((cmd & (1 << 1)) >> 1)
-        r = ((cmd & (1 << 2)) >> 2)
-        l = ((cmd & (1 << 3)) >> 3)
+        d = ((ord(cmd[0]) & (1 << 0)) >> 0)
+        u = ((ord(cmd[0]) & (1 << 1)) >> 1)
+        r = ((ord(cmd[0]) & (1 << 2)) >> 2)
+        l = ((ord(cmd[0]) & (1 << 3)) >> 3)
 
-    if (((d == 0) and (u == 0)) or ((l == 0) and (r == 0))):
-        if (pause == False):
-            camera.capture('/home/pi/capture.jpg')
-            camera.stop_preview()
-            pause = True
+        if (((d == 0) and (u == 0)) or ((l == 0) and (r == 0))):
+            if (pause == False):
+                camera.capture('/home/pi/capture.jpg')
+                camera.stop_preview()
+                pause = True
+            else:
+                camera.start_preview()
+                pause = False
         else:
-            camera.start_preview()
-            pause = False
-    else:
-        if (d == 0): xPos = (xPos - delta) if ((xPos - delta) > 0)   else 0
-        if (u == 0): xPos = (xPos + delta) if ((xPos + delta) < 127) else 127
-        if (r == 0): yPos = (yPos - delta) if ((yPos - delta) > 0)   else 0
-        if (l == 0): yPos = (yPos + delta) if ((yPos + delta) < 127) else 127
+            if (d == 0): xPos = (xPos - delta) if ((xPos - delta) > 0)   else 0
+            if (u == 0): xPos = (xPos + delta) if ((xPos + delta) < 127) else 127
+            if (r == 0): yPos = (yPos - delta) if ((yPos - delta) > 0)   else 0
+            if (l == 0): yPos = (yPos + delta) if ((yPos + delta) < 127) else 127
 
-        x = chr(xPos + 0)
-        y = chr(yPos + 128)
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            try:
+                s.connect(('', 2301))
+            except socket.error, (val, msg):
+                print >> sys.stderr, "Could not open socket:\n" + msg
+                sys.exit(1)
+            s.send(chr(xPos + 0))
+            s.shutdown(socket.SHUT_RDWR)
+            s.close()
 
-        try:
-            s.connect((host, serverPort))
-        except socket.error, (val, msg):
-            print >> sys.stderr, "Could not open socket:\n" + msg
-        s.send(x)
-        s.close()
-
-        try:
-            s.connect((host, serverPort))
-        except socket.error, (val, msg):
-            print >> sys.stderr, "Could not open socket:\n" + msg
-        s.send(y)
-        s.close()
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            try:
+                s.connect(('', 2301))
+            except socket.error, (val, msg):
+                print >> sys.stderr, "Could not open socket:\n" + msg
+                sys.exit(1)
+            s.send(chr(yPos + 128))
+            s.shutdown(socket.SHUT_RDWR)
+            s.close()
