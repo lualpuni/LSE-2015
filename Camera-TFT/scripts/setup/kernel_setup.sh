@@ -30,7 +30,8 @@ sudo cp /boot/kernel.img /boot/kernel.img.bak.raspbian
 curl -SLs https://apt.adafruit.com/add | sudo bash
 
 # Update system and install kernel
-sudo apt-get update; sudo apt-get upgrade -y
+sudo apt-get update
+#sudo apt-get upgrade -y
 sudo apt-get install -y adafruit-pitft-helper
 
 # Back-up boot configuration and create copy

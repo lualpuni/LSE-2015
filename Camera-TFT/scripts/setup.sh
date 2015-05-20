@@ -3,7 +3,7 @@
 # Master setup script
 # This script call all other setup scripts in the setup directory.
 
-for filename in ./setup/*_test.sh; do
+for filename in ./setup/*_setup.sh; do
    echo "Executing: "$filename""
    bash $filename
    if [ $? -ne 0 ]; then

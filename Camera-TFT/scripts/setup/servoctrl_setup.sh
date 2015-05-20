@@ -7,7 +7,7 @@ shdir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 sudo apt-get update
 
 # Install dependencies
-sudo apt-get install -y git-core
+sudo apt-get install -y git-core screen
 
 # Install wiringPi
 git clone git://git.drogon.net/wiringPi /tmp/rpi-wiringpi

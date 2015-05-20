@@ -9,6 +9,10 @@
 # Description:       Control camera and pan/tilt with commands over UART.
 ### END INIT INFO
 
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#!! CURRENTLY NOT WORKING !!
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 #Required
 USER=pi
 
@@ -16,7 +20,7 @@ case "$1" in
   start)
         echo "Starting camctrl"
         start-stop-daemon --start --chuid $USER --name camctrl --pidfile /var/run/camctrl.pid \
-         --background --make-pidfile --startas python /usr/local/bin/camctrl.pyo -- --daemon
+         --background --make-pidfile --startas /usr/local/bin/camctrl.py -- --daemon
         ;;
   stop)
         echo "Stopping camctrl"
@@ -29,7 +33,7 @@ case "$1" in
         sleep 5s
         echo "Restarting camctrl"
         start-stop-daemon --start --chuid $USER --name camctrl --pidfile /var/run/camctrl.pid \
-         --background --make-pidfile --startas python /usr/local/bin/camctrl.pyo -- --daemon
+         --background --make-pidfile --startas /usr/local/bin/camctrl.py -- --daemon
         ;;
   *)
         N=/etc/init.d/$NAME

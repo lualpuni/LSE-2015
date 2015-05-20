@@ -3,7 +3,7 @@
 # Master test script
 # This script call all other test scripts in the test directory.
 
-for filename in ./test/*_setup.sh; do
+for filename in ./test/*_test.sh; do
    echo "Executing: "$filename""
    bash $filename
    if [ $? -ne 0 ]; then
