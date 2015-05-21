@@ -2,16 +2,23 @@
 
 import serial
 import socket
-import picamera
 import time
 import sys
+import picamera
+import wiringpi2 as wiringpi
 
 if __name__ == '__main__':
 
     delta = 5
-    pause = False
     xPos  = 64
     yPos  = 64
+
+   # use BCM GPIO numbers
+   wiringpi.wiringPiSetupGpio()
+
+   # Configure interrupt pin
+   wiringpi.pinMode(29, OUTPUT)
+   wiringpi.digitalWrite(29, LOW)
 
     # connect to serial port
     ser = serial.Serial()
@@ -42,14 +49,12 @@ if __name__ == '__main__':
         r = ((ord(cmd[0]) & (1 << 2)) >> 2)
         l = ((ord(cmd[0]) & (1 << 3)) >> 3)
 
-        if (((d == 0) and (u == 0)) or ((l == 0) and (r == 0))):
-            if (pause == False):
-                camera.capture('/home/pi/capture.jpg')
-                camera.stop_preview()
-                pause = True
-            else:
-                camera.start_preview()
-                pause = False
+        if ((d == 0) and (u == 0) and (l == 0) and (r == 0)):
+            wiringpi.digitalWrite(29, HIGH)
+            sleep 0.05
+            wiringpi.digitalWrite(29, LOW)
+        elif (((d == 0) and (u == 0)) or ((l == 0) and (r == 0))):
+            camera.capture('/home/pi/capture.jpg', use_video_port=True)
         else:
             if (d == 0): xPos = (xPos - delta) if ((xPos - delta) > 0)   else 0
             if (u == 0): xPos = (xPos + delta) if ((xPos + delta) < 127) else 127

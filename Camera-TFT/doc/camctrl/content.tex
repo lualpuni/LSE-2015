@@ -1,0 +1,117 @@
+\section{Description}
+The \textbf{camctrl} application provides the functionality controlling the
+pan/tilt mechanism of the camera.
+It receives raw commands over UART, process the data and sends processed
+commands to the servomotors.
+
+\section{Dependencies}
+\textbf{camctrl} depends on \textbf{servoctrl}, which is also provided within
+this repository and the documentation of which can be found in
+\texttt{../servoctrl}.
+
+\section{Application}
+The application receives input through an UART-USB converter. this devices is
+assumed to be mapped to \texttt{/dev/ttyUSB0}.
+
+\textbf{camctrl} expects received data to be in the following format:
+\textbf{8N1 19200bps}.
+
+The application interprets incoming data as shown in the table below:
+
+   \subsubsection{\texttt{Input}}
+%   \begin{itemize}
+%      \item 8 bit.
+%      \item \textbf{Write}.
+%   \end{itemize}
+   \begin{table}[!htb]
+      \begin{center}
+         \begin{tabular}{|c|c|c|}
+            \rowcolor{black}
+            \textcolor{white}{\textbf{Bit}}  &
+            \textcolor{white}{\textbf{Name}} &
+            \textcolor{white}{\textbf{Description}}\\
+            \hline
+            \hline
+            \textbf{0}   & \texttt{down}  & State of "down" button \\
+            \hline
+            \textbf{1}   & \texttt{up}    & State of "up" button \\
+            \hline
+            \textbf{2}   & \texttt{right} & State of "right" button \\
+            \hline
+            \textbf{3}   & \texttt{left}  & State of "left" button \\
+            \hline
+            \textbf{7-4} & \texttt{x} & RESERVED \\
+            \hline
+         \end{tabular}
+         \caption{\texttt{Input}}
+         \label{table:input}
+      \end{center}
+   \end{table}
+
+Please not that this application considers the state bits in the byte to be
+active-low; meaning that the least significant nibble of the byte is b1111 when
+all of the buttons are at rest.
+
+If the "up" and "down" or the "left" and "right" buttons are asserted
+simultaneously, the cameras's video stream is paused and a capture of the frozen
+frame is saved to \texttt{/home/pi/capture.jpg}. Once paused, the normal
+execution of the application can be resumed by asserting the pause condition
+once again.
+
+All other messages are processed and commands are sent to the \textbf{servoctrl}
+over socket \textbf{2301} in the format specified by the documentation of the
+aforementioned application.
+
+\section{Setup}
+A set up script is provided at \texttt{../../scripts/setup/camctrl\_setup.sh}
+to ease the building and installation.
+
+If the setup script finished successfully; the binary should be at\\
+\texttt{/usr/local/bin/camctrl.py} and a UNIX System V init script should be
+at\\ \texttt{/etc/init.d/camctrl}.
+
+Aside form the setup script; the source code is also provided.
+
+\section{Service} \label{sec:service}
+To start \textbf{camctrl} as a daemon; execute \texttt{/etc/init.d/camctrl}
+as root. This daemon can take as argument \textbf{start}, \textbf{stop},
+\textbf{restart} or \textbf{force-reload}.
+
+\section{Testing}
+A test script is provided at \texttt{../../scripts/test/camctrl\_test.sh} to
+test the application. The test script execute a series of test cases and then
+asks for user input to determine if the test executed correctly.
+
+If the test was successful, the scripts returns 0, if the test failed a value
+different from 0 is returned.
+
+To aid with the testing of this application, a helper script has been developed
+(\texttt{camctrl-dummy.py}) to simulate UART messages with the same UART-USB
+converter. For this to work correctly it is necessary to connect the TX and RX
+pins of the converter during the test.
+
+The test sequence currently implemented is the following:
+
+   \begin{enumerate}
+      \item At the start, the user is asked if the video stream is being
+         displayed correctly.
+      \item A simulated "pause" condition is sent.
+      \item The user is asked if the video stream has paused.
+      \item Simulated messages move the pan/tilt mechanism in a square path.
+      \item The user is asked if the pan/tilt mechanism followed expected path.
+   \end{enumerate}
+
+\section{Issues}
+The following issues have been observed in this module:
+   \begin{enumerate}
+      \item At the time of writing, a recent update of the Raspberry Pi
+         bootloader and the third party kernel and packages by Adafruit needed
+         to control the LCD-TFT touchcreen have caused the screen to not
+         function. This is expected to be resolved by the upstream developer.
+      \item There is a bug in the sevice script \texttt{/etc/init.d/camctrl} or
+         the source code that prevents the application from being daemonized. as
+         a workaround, the following command can be executed the start
+         \textbf{camctrl} detached:\\
+         \texttt{screen -d -m -S camctrl python /usr/local/bin/camctrl.py}
+   \end{enumerate}
+
